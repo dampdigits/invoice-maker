@@ -7,6 +7,9 @@ export const checkToken = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    if (!decodedToken) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     const business = await Business.findById(decodedToken.id).select(
       "-password"
     );

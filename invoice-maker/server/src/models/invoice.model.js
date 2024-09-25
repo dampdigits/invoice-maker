@@ -7,7 +7,7 @@ const InvoiceSchema = new mongoose.Schema({
   },
   customer: {
     name: { type: String, required: true },
-    email: { type: String, required: true },
+    phone: { type: String, required: true },
     address: {
       street: { type: String, required: true },
       city: { type: String, required: true },
@@ -17,17 +17,13 @@ const InvoiceSchema = new mongoose.Schema({
   },
   items: [
     {
+      _id: false,
       description: { type: String, required: true },
       quantity: { type: Number, required: true },
       price: { type: Number, required: true },
       total: { type: Number, required: true },
     },
   ],
-  invoiceNumber: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   dateIssued: {
     type: Date,
     default: Date.now,
