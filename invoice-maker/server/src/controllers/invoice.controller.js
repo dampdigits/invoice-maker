@@ -5,7 +5,6 @@ import Invoice from "../models/invoice.model.js";
 export const createInvoice = async (req, res) => {
   try {
     const data = req.body;
-    console.log("tushar");
     const business = res.locals.business;
     data.items.forEach((item) => {
       item.total = item.quantity * item.price;
@@ -44,13 +43,26 @@ export const createInvoice = async (req, res) => {
 export const getInvoice = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
     const invoice = await Invoice.findById(id);
     if (!invoice) {
       return res.status(400).json(new ApiError("Invoice not found"));
     }
     res.status(200).json(new ApiResponse("Fetched successfully", invoice));
   } catch (error) {
-    return res.status(500).json(new ApiError(error.message||"Internal Server Error"));
+    return res
+      .status(500)
+      .json(new ApiError(error.message || "Internal Server Error"));
+  }
+};
+
+export const getInvoices = async (req, res) => {
+  try {
+    const business = res.locals.business;
+    const invoices = await Invoice.find({ business: business._id });
+    res.status(200).json(new ApiResponse("Fetched successfully", invoices));
+  } catch (error) {
+    return res
+      .status(500)
+      .json(new ApiError(error.message || "Internal Server Error"));
   }
 };

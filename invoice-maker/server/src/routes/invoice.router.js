@@ -8,6 +8,7 @@ import { invoiceIdSchema, invoiceSchema } from "../schemas/zodSchema.js";
 import {
   createInvoice,
   getInvoice,
+  getInvoices,
 } from "../controllers/invoice.controller.js";
 
 const invoiceRouter = Router();
@@ -18,6 +19,7 @@ invoiceRouter.post(
   validateBody(invoiceSchema),
   createInvoice
 );
+invoiceRouter.get("/getAll", checkToken, getInvoices);
 invoiceRouter.get("/:id", validateParams(invoiceIdSchema), getInvoice);
 
 export default invoiceRouter;
