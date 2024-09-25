@@ -1,7 +1,8 @@
 class ApiError {
-  constructor(error) {
+  constructor(message, errors) {
     this.success = false;
-    this.error = error;
+    this.message = message;
+    this.errors = errors;
   }
 }
 
