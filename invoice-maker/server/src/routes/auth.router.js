@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { validate } from "../middlewares/validate.middleware.js";
+import { validateBody } from "../middlewares/validate.middleware.js";
 import { loginSchema, registerSchema } from "../schemas/zodSchema.js";
 import {
   getMe,
@@ -11,8 +11,8 @@ import { checkToken } from "../middlewares/auth.middleware.js";
 
 const authRouter = Router();
 
-authRouter.post("/register", validate(registerSchema), register);
-authRouter.post("/login", validate(loginSchema), login);
+authRouter.post("/register", validateBody(registerSchema), register);
+authRouter.post("/login", validateBody(loginSchema), login);
 authRouter.get("/logout", checkToken, logout);
 authRouter.get("/me", checkToken, getMe);
 

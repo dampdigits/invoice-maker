@@ -33,7 +33,7 @@ export const register = async (req, res) => {
     res.status(201).json(new ApiResponse("Business created successfully"));
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json(new ApiError("Internal Server Error"));
   }
 };
 

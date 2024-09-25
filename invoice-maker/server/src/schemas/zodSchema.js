@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { z } from "zod";
 
 const registerSchema = z.object({
@@ -81,5 +82,18 @@ const invoiceSchema = z.object({
     .datetime(),
   status: z.enum(["Pending", "Paid", "Overdue"]),
 });
-
-export { registerSchema, loginSchema, invoiceSchema };
+const invoiceIdSchema = z.object({
+  id: z
+    .string({
+      invalid_type_error: "Invalid ID",
+    })
+    .refine(
+      (val) => {
+        return mongoose.Types.ObjectId.isValid(val);
+      },
+      {
+        message: "Invalid ID",
+      }
+    ),
+});
+export { registerSchema, loginSchema, invoiceSchema, invoiceIdSchema };
