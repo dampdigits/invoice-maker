@@ -4,7 +4,7 @@
 [![Node.js](https://img.shields.io/badge/Node.js-v14.17.0-green?style=flat&logo=nodedotjs)](https://nodejs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-v4.4.0-blue?style=flat&logo=mongodb)](https://www.mongodb.com/)
 
-**makeyourinvoice.vercel.app** is an all-in-one platform designed to effortlessly generate professional invoices for small businesses, event organizers, and merchants. This platform enables users to create invoices, email them directly to customers, and provides a scannable QR code for easy access to transaction details and payment links.
+**Invoice-Maker** is an all-in-one platform designed to effortlessly generate professional invoices for small businesses, event organizers, and merchants. This platform enables users to create invoices, email them directly to customers, and provides a scannable QR code for easy access to transaction details and payment links.
 
 ## Features
 
@@ -31,8 +31,8 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/makeyourinvoice.git
-    cd makeyourinvoice
+    git clone https://github.com/dampdigits/invoice-maker.git
+    cd invoice-maker
     ```
 
 2. Install dependencies:
@@ -40,17 +40,12 @@ To run this project locally, follow these steps:
     pnpm install
     ```
 
-3. Set up environment variables (create a `.env` file):
-    ```plaintext
-    MONGODB_URI=your_mongodb_connection_string
-    ```
-
-4. Start the development server:
+3. Start the development server:
     ```bash
     pnpm dev
     ```
 
-5. Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
+4. Open your browser and navigate to [http://localhost:3000](http://localhost:3000).
 
 ## Usage
 
@@ -97,5 +92,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-For inquiries, please reach out to [your.email@example.com](mailto:your.email@example.com).
-
+For inquiries, please reach out to [invoicegenerator270@gmail.com](mailto:invoicegenerator270@gmail.com).
