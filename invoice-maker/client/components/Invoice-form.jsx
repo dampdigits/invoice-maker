@@ -78,7 +78,6 @@ export default function InvoiceForm() {
         }
       );
       const data = await res.json();
-      console.log(data?.data[0]);
       form.setValue("name", data?.data[0]["person.fullName"]);
       form.setValue("phone", data?.data[0]["phone.number"]);
       form.setValue("street", data?.data[0]["location.street"]);

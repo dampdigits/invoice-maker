@@ -12,9 +12,10 @@ import {
 } from "@/components/ui/table";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function InvoicesTable({ data }) {
-  const router=useRouter();
+  const router = useRouter();
   const [currentPage, setCurrentPage] = React.useState(1);
   const invoices = useMemo(() => {
     return data.slice((currentPage - 1) * 10, currentPage * 10);
@@ -25,7 +26,6 @@ export default function InvoicesTable({ data }) {
       method: "GET",
       credentials: "include",
     });
-    console.log(res);
     const data = await res.blob();
     const url = window.URL.createObjectURL(data);
     router.push(url);
@@ -52,8 +52,14 @@ export default function InvoicesTable({ data }) {
           {invoices.map((invoice, index) => (
             <TableRow key={index}>
               <TableCell className="font-medium">{index + 1}</TableCell>
-              <TableCell>{invoice.customer.name}</TableCell>
-              <TableCell className="whitespace-nowrap">{invoice.customer.phone}</TableCell>
+              <TableCell>
+                <Link href={"/invoice/" + invoice._id}>
+                  {invoice.customer.name}
+                </Link>
+              </TableCell>
+              <TableCell className="whitespace-nowrap">
+                {invoice.customer.phone}
+              </TableCell>
               <TableCell>{invoice.customer.address.city}</TableCell>
               <TableCell>
                 {invoice.status === "Paid" && (
