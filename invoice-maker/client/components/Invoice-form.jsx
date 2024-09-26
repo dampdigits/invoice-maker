@@ -30,13 +30,14 @@ import { cn } from "@/lib/utils";
 import { Trash } from "lucide-react";
 import { invoiceSchema } from "@/schemas/zodSchema";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 export default function InvoiceForm() {
   const form = useForm({
     resolver: zodResolver(invoiceSchema),
     defaultValues: {
       name: "",
-      email:"",
+      email: "",
       phone: "",
       street: "",
       city: "",
@@ -65,7 +66,7 @@ export default function InvoiceForm() {
         "commerce.price",
         "commerce.product",
         "date.future",
-        "internet.email"
+        "internet.email",
       ];
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/data/random`,
@@ -102,7 +103,7 @@ export default function InvoiceForm() {
 
   async function onSubmit(values) {
     try {
-      console.log(values)
+      console.log(values);
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/invoice/create`,
         {
@@ -124,8 +125,9 @@ export default function InvoiceForm() {
           }),
           headers: {
             "Content-Type": "application/json",
+            Cookie: "accessToken" + "=" + Cookies.get("accessToken"),
           },
-          credentials: "include"
+          credentials: "include",
         }
       );
       const data = await res.blob();
