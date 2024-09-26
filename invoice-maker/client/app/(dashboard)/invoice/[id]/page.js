@@ -4,7 +4,6 @@ async function fetchData(id) {
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/invoice/${id}`,
     {
       method: "GET",
-      credentials: "include",
     }
   );
   const data = await res.json();

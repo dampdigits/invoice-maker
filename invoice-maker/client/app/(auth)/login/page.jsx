@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Users } from "lucide-react";
+import Cookies from "js-cookie";
 export default function Login() {
   const router = useRouter();
   const form = useForm({
@@ -33,7 +34,6 @@ export default function Login() {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
         {
           method: "POST",
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
@@ -45,9 +45,12 @@ export default function Login() {
         toast.error(data.message);
         return;
       }
+      console.log(data)
+      Cookies.set("accessToken", data.data.accessToken);
       toast.success(data.message);
       router.push("/");
     } catch (error) {
+      console.log(error)
       toast.error("Something went wrong");
     }
   }

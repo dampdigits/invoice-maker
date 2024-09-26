@@ -54,13 +54,7 @@ export const login = async (req, res) => {
     const accessToken = await generateToken(business);
     res
       .status(200)
-      .cookie("accessToken", accessToken, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        sameSite: "none",
-        secure: true,
-      })
-      .json(new ApiResponse("Login successful"));
+      .json(new ApiResponse("Login successful", {accessToken}));
   } catch (error) {
     console.log(error);
     res.status(500).json(new ApiError("Internal Server Error"));

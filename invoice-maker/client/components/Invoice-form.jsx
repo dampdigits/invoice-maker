@@ -117,7 +117,10 @@ export default function InvoiceForm() {
             dueDate: "2024-10-15T00:00:00.000Z",
             status: values.status,
           }),
-          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include"
         }
       );
       const data = await res.blob();

@@ -1,6 +1,9 @@
+"use client";
 import React from "react";
 import ThemeToggle from "./ThemeToggle";
 import Link from "next/link";
+import { Button } from "./ui/button";
+import Cookies from "js-cookie";
 
 export default function Navbar() {
   return (
@@ -15,6 +18,16 @@ export default function Navbar() {
         <Link href={"/create-invoice"}>
           <p className="hover:underline">Create Invoice</p>
         </Link>
+        <Button
+          onClick={() => {
+            Cookies.remove("accessToken");
+            window.location.reload();
+          }}
+          variant="outline"
+          className="text-sm"
+        >
+          Logout
+        </Button>
         <ThemeToggle />
       </div>
     </nav>
