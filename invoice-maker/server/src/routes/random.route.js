@@ -3,6 +3,6 @@ import { getRandomData } from "../controllers/randomData.controller.js";
 
 const randomDataRouter = Router();
 
-randomDataRouter.get("/random", getRandomData);
+randomDataRouter.post("/random", getRandomData);
 
 export default randomDataRouter;

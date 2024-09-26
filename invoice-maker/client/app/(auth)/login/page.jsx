@@ -28,13 +28,17 @@ export default function page() {
   });
   async function onSubmit(values) {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
       const data = await res.json();
       if (!data.success) {
         toast.error(data.message);
@@ -86,8 +90,11 @@ export default function page() {
         </form>
       </Form>
       <p className="text-center mt-4">
-          Don't have an account? <Link href="/register" className="text-blue-500">Register</Link> 
-        </p>
+        Don't have an account?{" "}
+        <Link href="/register" className="text-blue-500">
+          Register
+        </Link>
+      </p>
     </div>
   );
 }

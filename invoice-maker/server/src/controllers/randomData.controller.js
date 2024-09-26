@@ -1,5 +1,5 @@
 import ApiError from "../libs/ApiError.js";
-import { faker } from "@faker-js/faker";
+import {  fakerEN_IN as faker } from "@faker-js/faker";
 import ApiResponse from "../libs/ApiResponse.js";
 import getNestedProperty from "../utils/getNestedProperty.js";
 export const getRandomData = async (req, res) => {
@@ -8,6 +8,7 @@ export const getRandomData = async (req, res) => {
     return res.status(400).json(new ApiError("Invalid fields"));
   }
   try {
+    
     const result = Array.from({ length: count }, () => {
       const data = {};
       fields.forEach((field) => {

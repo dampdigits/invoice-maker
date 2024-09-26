@@ -8,6 +8,7 @@ export const validateBody = (schema) => {
       await schema.parseAsync(req.body);
       next();
     } catch (error) {
+      console.log(error)
       if (error instanceof ZodError) {
         const errorMessages = error.errors.map((issue) => ({
           message: issue.message,

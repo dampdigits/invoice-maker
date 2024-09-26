@@ -44,33 +44,47 @@ const loginSchema = z.object({
 });
 
 const itemSchema = z.object({
-  description: z.string({
-    required_error: "Description is required",
-  }),
-  quantity: z.number({
-    required_error: "Quantity is required",
-  }),
-  price: z.number({
-    required_error: "Price is required",
-  }),
+  description: z
+    .string({
+      required_error: "Description is required",
+    })
+    .min(1, "Description is required"),
+  quantity: z
+    .number({
+      required_error: "Quantity is required",
+    })
+    .min(1, "Quantity is required"),
+  price: z
+    .number({
+      required_error: "Price is required",
+    })
+    .min(1, "Price is required"),
 });
 
 const invoiceSchema = z.object({
-  name: z.string({
-    required_error: "Name is required",
-  }),
+  name: z
+    .string({
+      required_error: "Name is required",
+    })
+    .min(1, "Name is required"),
   phone: z.string({
     required_error: "Phone is required",
   }),
-  street: z.string({
-    required_error: "Street is required",
-  }),
-  city: z.string({
-    required_error: "City is required",
-  }),
-  state: z.string({
-    required_error: "State is required",
-  }),
+  street: z
+    .string({
+      required_error: "Street is required",
+    })
+    .min(1, "Street is required"),
+  city: z
+    .string({
+      required_error: "City is required",
+    })
+    .min(1, "City is required"),
+  state: z
+    .string({
+      required_error: "State is required",
+    })
+    .min(1, "State is required"),
   zipCode: z.string({
     required_error: "Zip code is required",
   }),
