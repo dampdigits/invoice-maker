@@ -89,10 +89,12 @@ const invoiceSchema = z.object({
       required_error: "Name is required",
     })
     .min(1, "Name is required"),
-  phone: z
-    .string({
-      required_error: "Phone is required",
-    }),
+  phone: z.string({
+    required_error: "Phone is required",
+  }),
+  email: z
+    .string({ required_error: "Email is required" })
+    .email("Invalid email"),
   street: z
     .string({
       required_error: "Street is required",
@@ -108,10 +110,9 @@ const invoiceSchema = z.object({
       required_error: "State is required",
     })
     .min(1, "State is required"),
-  zipCode: z
-    .string({
-      required_error: "Zip code is required",
-    }),
+  zipCode: z.string({
+    required_error: "Zip code is required",
+  }),
   items: z.array(itemSchema),
   dueDate: z.date(),
   status: z.enum(["Pending", "Paid", "Overdue"]),

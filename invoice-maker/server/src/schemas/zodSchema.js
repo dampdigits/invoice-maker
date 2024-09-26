@@ -70,6 +70,9 @@ const invoiceSchema = z.object({
   phone: z.string({
     required_error: "Phone is required",
   }),
+  email: z
+    .string({ required_error: "Email is required" })
+    .email("Invalid email"),
   street: z
     .string({
       required_error: "Street is required",

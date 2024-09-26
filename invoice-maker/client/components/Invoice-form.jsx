@@ -36,6 +36,7 @@ export default function InvoiceForm() {
     resolver: zodResolver(invoiceSchema),
     defaultValues: {
       name: "",
+      email:"",
       phone: "",
       street: "",
       city: "",
@@ -64,6 +65,7 @@ export default function InvoiceForm() {
         "commerce.price",
         "commerce.product",
         "date.future",
+        "internet.email"
       ];
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/data/random`,
@@ -85,6 +87,7 @@ export default function InvoiceForm() {
       form.setValue("state", data?.data[0]["location.state"]);
       form.setValue("zipCode", data?.data[0]["location.zipCode"]);
       form.setValue("dueDate", new Date(data?.data[0]["date.future"]));
+      form.setValue("email", data?.data[0]["internet.email"]);
       form.setValue("items", [
         {
           description: data?.data[0]["commerce.product"],
@@ -99,6 +102,7 @@ export default function InvoiceForm() {
 
   async function onSubmit(values) {
     try {
+      console.log(values)
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/invoice/create`,
         {
@@ -108,6 +112,7 @@ export default function InvoiceForm() {
           },
           body: JSON.stringify({
             name: values.name,
+            email: values.email,
             phone: values.phone,
             street: values.street,
             city: values.city,
@@ -161,6 +166,19 @@ export default function InvoiceForm() {
               <FormLabel>Customer Phone</FormLabel>
               <FormControl>
                 <Input placeholder="123-456-7890" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Customer Email</FormLabel>
+              <FormControl>
+                <Input placeholder="john@example.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

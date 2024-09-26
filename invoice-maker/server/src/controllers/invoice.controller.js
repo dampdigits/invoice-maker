@@ -1,6 +1,7 @@
-import { generatePDF } from "../../pdfgenerator.js";
 import ApiError from "../libs/ApiError.js";
 import ApiResponse from "../libs/ApiResponse.js";
+import { generatePDF } from "../libs/pdfgenerator.js";
+import { sendMail } from "../libs/sendMail.js";
 import Invoice from "../models/invoice.model.js";
 import { Parser } from "json2csv";
 
@@ -20,6 +21,7 @@ export const createInvoice = async (req, res) => {
       customer: {
         name: data.name,
         phone: data.phone,
+        email: data.email,
         address: {
           street: data.street,
           city: data.city,
@@ -37,10 +39,14 @@ export const createInvoice = async (req, res) => {
     });
     invoice.business = res.locals.business;
     const pdf = await generatePDF(invoice);
-    // return res.status(201).json(new ApiResponse("Invoice created successfully"));
-    res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", "attachment; filename=invoice.pdf");
-    res.send(pdf);
+
+    await sendMail({
+      email: data.email,
+      subject: "Invoice for " + data.name,
+      message: "Please find the invoice attached.",
+      content: pdf,
+    });
+    return res.header("Content-Type", "application/pdf").send(pdf);
   } catch (error) {
     console.log(error);
     res.status(500).json(new ApiError("Internal Server Error"));
