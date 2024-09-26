@@ -22,24 +22,7 @@ app.use(cookieParser());
 connectDB();
 
 const port = process.env.PORT;
-app.get("/", async (req, res) => {
-  const pdfBuffer = await new Promise((resolve) => {
-    const doc = new PDFDocument();
 
-    doc.text("hello world", 100, 50);
-    doc.end();
-
-    const buffers = [];
-    doc.on("data", buffers.push.bind(buffers));
-    doc.on("end", () => {
-      const pdfData = Buffer.concat(buffers);
-      resolve(pdfData);
-    });
-  });
-  res.setHeader("Content-Type", "application/pdf");
-  res.setHeader("Content-Disposition", "attachment; filename=invoice.pdf");
-  res.send(pdfBuffer);
-});
 app.use("/api/v1/data", randomDataRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/invoice", invoiceRouter);
