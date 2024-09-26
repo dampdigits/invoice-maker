@@ -87,7 +87,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Next.js](https://nextjs.org/)
 - [Node.js](https://nodejs.org/)
 - [MongoDB](https://www.mongodb.com/)
-- [PDFKit](http://pdfkit.org/)
+- [PDFkit](http://pdfkit.org/)
+- [PDFkit-table](https://github.com/natancabral/pdfkit-table)
 - [QRCode Library](https://github.com/soldair/node-qrcode)
 
 ## Contact
