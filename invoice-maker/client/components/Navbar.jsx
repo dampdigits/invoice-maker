@@ -1,10 +1,20 @@
 import React from "react";
 import ThemeToggle from "./ThemeToggle";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 items-center w-full flex h-20 bg-background pl-96 border-b">
-      <div className="ml-auto px-5">
+    <nav className="fixed top-0 left-0 items-center w-full justify-between flex h-20 bg-background px-5 border-b">
+      <Link href={"/"}>
+        <p className="sm:text-2xl text-lg font-bold">Invoice Maker</p>{" "}
+      </Link>
+      <div className="flex items-center gap-5">
+        <Link href={"/"}>
+          <p className="hover:underline">Dashboard</p>
+        </Link>
+        <Link href={"/create-invoice"}>
+          <p className="hover:underline">Create Invoice</p>
+        </Link>
         <ThemeToggle />
       </div>
     </nav>

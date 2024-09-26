@@ -35,16 +35,16 @@ export default async function page() {
   const invoices = await fetchInvoices();
   return (
     <div className="p-5">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-44 gap-5">
-        <div className="bg-blue-400 shadow-md rounded-lg p-5 flex justify-between flex-col">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="bg-blue-400 shadow-md rounded-lg p-5 flex justify-between h-44 flex-col">
           <h2 className="text-2xl font-bold">Total Revenue</h2>
           <p className="text-3xl font-bold">₹{data?.data?.totalRevenue}</p>
         </div>
-        <div className="bg-red-400 shadow-md rounded-lg p-5 flex justify-between flex-col">
+        <div className="bg-red-400 shadow-md rounded-lg p-5 flex justify-between h-44 flex-col">
           <h2 className="text-2xl font-bold">Total Invoices</h2>
           <p className="text-3xl font-bold">{data?.data?.totalInvoices}</p>
         </div>
-        <div className="bg-amber-400 shadow-md rounded-lg p-5 flex justify-between flex-col">
+        <div className="bg-amber-400 shadow-md rounded-lg p-5 flex justify-between h-44 flex-col">
           <h2 className="text-2xl font-bold">Total Items Sold</h2>
           <p className="text-3xl font-bold">{data?.data?.totalItemsSold}</p>
         </div>

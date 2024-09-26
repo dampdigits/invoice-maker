@@ -53,7 +53,7 @@ export default function InvoicesTable({ data }) {
             <TableRow key={index}>
               <TableCell className="font-medium">{index + 1}</TableCell>
               <TableCell>{invoice.customer.name}</TableCell>
-              <TableCell>{invoice.customer.phone}</TableCell>
+              <TableCell className="whitespace-nowrap">{invoice.customer.phone}</TableCell>
               <TableCell>{invoice.customer.address.city}</TableCell>
               <TableCell>
                 {invoice.status === "Paid" && (
