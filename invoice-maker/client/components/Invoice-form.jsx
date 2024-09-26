@@ -360,9 +360,25 @@ export default function InvoiceForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        {/* <div className="flex items-center justify-center">
+          <Button className="text-xl rounded-md h-14 px-10" type="submit">
+            Submit
+          </Button>
+        </div> */}
+        <div className="flex justify-between items-center mt-5">
+          <Button
+            type="button"
+            variant="outline"
+            className="rounded-full text-xl bg-muted px-6"
+            onClick={generateRandomData}
+          >
+            Generate Random Data
+          </Button>
+          <Button className="rounded-full px-10 text-xl" type="submit">
+            Submit
+          </Button>
+        </div>
       </form>
-      <Button onClick={generateRandomData}>Generate Random Data</Button>
     </Form>
   );
 }

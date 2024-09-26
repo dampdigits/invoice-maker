@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
+import { Users } from "lucide-react";
 export default function page() {
   const router = useRouter();
   const form = useForm({
@@ -51,50 +52,68 @@ export default function page() {
     }
   }
   return (
-    <div className="border p-4 rounded-lg w-full max-w-xl mx-5">
-      <h1 className="text-3xl font-bold text-center mt-5">Login</h1>
-      <Form {...form}>
-        <form
-          noValidate
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8"
-        >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input required placeholder="Email" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <PasswordInput required placeholder="Password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button className="w-full" type="submit">
-            Login
-          </Button>
-        </form>
-      </Form>
-      <p className="text-center mt-4">
-        Don't have an account?{" "}
-        <Link href="/register" className="text-blue-500">
-          Register
-        </Link>
-      </p>
+    <div className="border rounded-lg w-full max-w-3xl mx-5 p-10 bg-card grid md:grid-cols-2 grid-cols-1 md:gap-5 gap-10">
+      <div className="w-full h-full">
+        <Users size={40} />
+        <h1 className="text-4xl font-bold mt-5">Login</h1>
+        <p className="text-2xl font-medium text-muted-foreground mt-2">
+          Login to your account
+        </p>
+      </div>
+      <div className="w-full">
+        <Form {...form}>
+          <form
+            noValidate
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8"
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="ml-2">Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="h-12"
+                      required
+                      placeholder="Email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="ml-2">Password</FormLabel>
+                  <FormControl>
+                    <PasswordInput
+                      className="h-12"
+                      required
+                      placeholder="Password"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button className="w-full h-14 text-xl rounded-full" type="submit">
+              Login
+            </Button>
+          </form>
+        </Form>
+        <p className="text-center mt-4">
+          Don't have an account?{" "}
+          <Link href="/register" className="text-blue-500">
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

@@ -63,9 +63,9 @@ export default function page() {
     }
   }
   return (
-    <div className="border rounded-lg w-full max-w-xl mx-5 overflow-hidden">
+    <div className="border rounded-lg bg-card w-full max-w-xl mx-5 overflow-hidden">
       <Progress value={(step / 3) * 100} className="h-1" />
-      <div className="p-4">
+      <div className="py-4 md:px-10 px-5">
         <h1 className="text-3xl font-bold text-center mt-5">Register</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -76,9 +76,10 @@ export default function page() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel className="ml-2">Name</FormLabel>
                       <FormControl>
                         <Input
+                          className="h-14"
                           required
                           placeholder="Business Name"
                           {...field}
@@ -94,9 +95,14 @@ export default function page() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel className="ml-2">Email</FormLabel>
                       <FormControl>
-                        <Input required placeholder="Email" {...field} />
+                        <Input
+                          className="h-14"
+                          required
+                          placeholder="Email"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -108,9 +114,14 @@ export default function page() {
                   name="phoneNumber"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone</FormLabel>
+                      <FormLabel className="ml-2">Phone</FormLabel>
                       <FormControl>
-                        <Input required placeholder="Phone" {...field} />
+                        <Input
+                          className="h-14"
+                          required
+                          placeholder="Phone"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -122,9 +133,14 @@ export default function page() {
                   name="taxId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>TaxID</FormLabel>
+                      <FormLabel className="ml-2">TaxID</FormLabel>
                       <FormControl>
-                        <Input required placeholder="TaxID" {...field} />
+                        <Input
+                          className="h-14"
+                          required
+                          placeholder="TaxID"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -139,9 +155,14 @@ export default function page() {
                   name="street"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Street</FormLabel>
+                      <FormLabel className="ml-2">Street</FormLabel>
                       <FormControl>
-                        <Input required placeholder="Street" {...field} />
+                        <Input
+                          className="h-14"
+                          required
+                          placeholder="Street"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -153,9 +174,14 @@ export default function page() {
                   name="city"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>City</FormLabel>
+                      <FormLabel className="ml-2">City</FormLabel>
                       <FormControl>
-                        <Input required placeholder="City" {...field} />
+                        <Input
+                          className="h-14"
+                          required
+                          placeholder="City"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -167,9 +193,14 @@ export default function page() {
                   name="state"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>State</FormLabel>
+                      <FormLabel className="ml-2">State</FormLabel>
                       <FormControl>
-                        <Input required placeholder="State" {...field} />
+                        <Input
+                          className="h-14"
+                          required
+                          placeholder="State"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -181,9 +212,14 @@ export default function page() {
                   name="zipCode"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Pincode</FormLabel>
+                      <FormLabel className="ml-2">Pincode</FormLabel>
                       <FormControl>
-                        <Input required placeholder="Pincode" {...field} />
+                        <Input
+                          className="h-14"
+                          required
+                          placeholder="Pincode"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -198,9 +234,13 @@ export default function page() {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Password</FormLabel>
+                      <FormLabel className="ml-2">Password</FormLabel>
                       <FormControl>
-                        <PasswordInput placeholder="Password" {...field} />
+                        <PasswordInput
+                          className="h-14"
+                          placeholder="Password"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -211,9 +251,10 @@ export default function page() {
                   name="confirmPassword"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
+                      <FormLabel className="ml-2">Confirm Password</FormLabel>
                       <FormControl>
                         <PasswordInput
+                          className="h-14"
                           placeholder="Confirm Password"
                           {...field}
                         />
@@ -222,31 +263,41 @@ export default function page() {
                     </FormItem>
                   )}
                 />
-                <Button className="w-full" type="submit">
-                  Submit
-                </Button>
               </>
             )}
+            <div className="flex items-center mt-5">
+              {step !== 1 && (
+                <Button
+                  type="button"
+                  onClick={() => setStep((prev) => prev - 1)}
+                  className="rounded-full px-10 bg-muted"
+                  variant="outline"
+                >
+                  Prev
+                </Button>
+              )}
+              {step !== 3 && (
+                <Button
+                  type="button"
+                  onClick={() => setStep((prev) => prev + 1)}
+                  className="rounded-full text-black px-10  ml-auto bg-primary"
+                  disabled={step === 3}
+                  variant="outline"
+                >
+                  Next
+                </Button>
+              )}
+              {step === 3 && (
+                <Button
+                  className="rounded-full text-black px-10  ml-auto bg-primary"
+                  type="submit"
+                >
+                  Register
+                </Button>
+              )}
+            </div>
           </form>
         </Form>
-        <div className="flex justify-between items-center mt-5">
-          <Button
-            onClick={() => setStep((prev) => prev - 1)}
-            className="rounded-sm px-6"
-            disabled={step === 1}
-            variant="outline"
-          >
-            Prev
-          </Button>
-          <Button
-            onClick={() => setStep((prev) => prev + 1)}
-            className="rounded-sm px-6"
-            disabled={step === 3}
-            variant="outline"
-          >
-            Next
-          </Button>
-        </div>
         <p className="text-center mt-4">
           Already have an account?{" "}
           <Link href="/login" className="text-blue-500">
