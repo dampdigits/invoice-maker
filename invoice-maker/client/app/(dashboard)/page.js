@@ -9,7 +9,7 @@ async function fetchData() {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Cookie: cookie.name + "=" + cookie.value,
+      "Authorization": `Bearer ${cookie.value}`,
     },
   });
   const data = await res.json();
@@ -23,7 +23,7 @@ async function fetchInvoices() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Cookie: cookie.name + "=" + cookie.value,
+        "Authorization": `Bearer ${cookie.value}`,
       },
     }
   );

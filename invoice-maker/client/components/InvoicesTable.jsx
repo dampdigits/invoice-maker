@@ -13,6 +13,7 @@ import {
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Cookies from "js-cookie";
 
 export default function InvoicesTable({ data }) {
   const router = useRouter();
@@ -22,13 +23,16 @@ export default function InvoicesTable({ data }) {
   }, [data, currentPage]);
   const totalPages = Math.ceil(data.length / 10);
   const handleCSV = async () => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/invoice/csv`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include"
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/invoice/csv`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+      }
+    );
     const data = await res.blob();
     const url = window.URL.createObjectURL(data);
     router.push(url);

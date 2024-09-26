@@ -3,7 +3,7 @@ import Business from "../models/business.model.js";
 import ApiError from "../libs/ApiError.js";
 export const checkToken = async (req, res, next) => {
   try {
-    const token = req.cookies.accessToken;
+    const token = req.headers.authorization?.split(" ")[1];
     if (!token) {
       return res.status(401).json(new ApiError("Unauthorized"));
     }

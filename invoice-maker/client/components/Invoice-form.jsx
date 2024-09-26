@@ -125,9 +125,8 @@ export default function InvoiceForm() {
           }),
           headers: {
             "Content-Type": "application/json",
-            Cookie: "accessToken" + "=" + Cookies.get("accessToken"),
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
           },
-          credentials: "include",
         }
       );
       const data = await res.blob();
