@@ -22,7 +22,7 @@ export default function InvoicesTable({ data }) {
   }, [data, currentPage]);
   const totalPages = Math.ceil(data.length / 10);
   const handleCSV = async () => {
-    const res = await fetch(`http://localhost:4000/api/v1/invoice/csv`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/invoice/csv`, {
       method: "GET",
       credentials: "include",
     });

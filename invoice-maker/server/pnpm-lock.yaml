@@ -38,6 +38,9 @@ importers:
       pdfkit:
         specifier: ^0.15.0
         version: 0.15.0
+      pdfkit-table:
+        specifier: ^0.1.99
+        version: 0.1.99
       qrcode:
         specifier: ^1.5.4
         version: 1.5.4
@@ -781,6 +784,9 @@ packages:
 
   path-to-regexp@0.1.10:
     resolution: {integrity: sha512-7lf7qcQidTku0Gu3YDPc8DJ1q7OOucfa/BSsIwjuh56VU7katFvuM8hULfkwB3Fns/rsVF7PwPKVw1sl5KQS9w==}
+
+  pdfkit-table@0.1.99:
+    resolution: {integrity: sha512-BaunFJ7cvKqIPONzX9FXUpeC/3iJeLo0v2nVNjCccAxdMXKvDMBjxyF4wZhKOYlmP+nYZcikf9ByVJeCzjNK6g==}
 
   pdfkit@0.15.0:
     resolution: {integrity: sha512-Z0dx0sEPKLW2kbThS1SWZ0iSHlRPoFMpP+oSjNrtwRjsfGivwE+r6emyEFwQG/fx1Ri0AGUHmDcGOSMMlLLnSg==}
@@ -1813,6 +1819,10 @@ snapshots:
   path-is-absolute@1.0.1: {}
 
   path-to-regexp@0.1.10: {}
+
+  pdfkit-table@0.1.99:
+    dependencies:
+      pdfkit: 0.15.0
 
   pdfkit@0.15.0:
     dependencies:

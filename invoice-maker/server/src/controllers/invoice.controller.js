@@ -1,3 +1,4 @@
+import { generatePDF } from "../../pdfgenerator.js";
 import ApiError from "../libs/ApiError.js";
 import ApiResponse from "../libs/ApiResponse.js";
 import Invoice from "../models/invoice.model.js";
@@ -15,7 +16,7 @@ export const createInvoice = async (req, res) => {
     data.totalAmount = data.subtotal + data.tax;
     data.business = business._id;
     //tushar-sameer  …create pdf with invoice details
-    await Invoice.create({
+    let invoice = await Invoice.create({
       customer: {
         name: data.name,
         phone: data.phone,
@@ -34,7 +35,12 @@ export const createInvoice = async (req, res) => {
       status: data.status,
       business: res.locals.business._id,
     });
-    res.status(201).json(new ApiResponse("Invoice created successfully"));
+    invoice.business = res.locals.business;
+    const pdf = await generatePDF(invoice);
+    // return res.status(201).json(new ApiResponse("Invoice created successfully"));
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "attachment; filename=invoice.pdf");
+    res.send(pdf);
   } catch (error) {
     console.log(error);
     res.status(500).json(new ApiError("Internal Server Error"));

@@ -1,145 +1,93 @@
-import PDFDocument from 'pdfkit';
-import QRCode from 'qrcode';
-import fs from 'fs';
+import PDFDocument from "pdfkit-table";
+import QRCode from "qrcode";
 
-// Create a new PDF document
-const doc = new PDFDocument({ size: 'A4', margin: 50 });
+export async function generatePDF(invoice) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const doc = new PDFDocument({ margin: 30, size: "A4" });
+      const buffers = [];
+      doc.on("data", buffers.push.bind(buffers));
+      doc.on("end", () => {
+        const pdfData = Buffer.concat(buffers);
+        resolve(pdfData);
+      });
 
-// Pipe the PDF into a file
-doc.pipe(fs.createWriteStream('invoice_with_qr.pdf'));
+      // PDF generation starts here
+      doc.fontSize(32).text("Invoice", { align: "center" });
 
-// Function to generate a QR code and embed it in a PDF
-async function generatePDFWithQR(doc, url) {
-	// Generate QR code as a Data URL (base64)
-	const qrCodeDataUrl = await QRCode.toDataURL(url);
+      doc.moveDown();
+      doc.fontSize(18);
+      doc
+        .text("From: ", { align: "left", continued: true })
+        .text("To:", { align: "right" });
 
-	// Extract base64 data without the prefix
-	const base64Data = qrCodeDataUrl.split(',')[1];
+      doc.moveDown(0.2);
+      doc.fontSize(12);
+      doc
+        .text(invoice.business.name, { align: "left", continued: true })
+        .text(invoice.customer.name, { align: "right" });
+      doc
+        .text(invoice.business.address.street, { align: "left", continued: true })
+        .text(invoice.customer.address.street, { align: "right" });
 
-	// Convert the base64 string to a buffer
-	const qrCodeBuffer = Buffer.from(base64Data, 'base64');
+      doc
+        .text(
+          `${invoice.business.address.city} ${invoice.business.address.state} ${invoice.business.address.zipCode}`,
+          { align: "left", continued: true }
+        )
+        .text(
+          `${invoice.customer.address.city} ${invoice.customer.address.state} ${invoice.customer.address.zipCode}`,
+          { align: "right" }
+        );
+      doc
+        .text(`Phone: ${invoice.business.phoneNumber}`, { align: "left", continued: true })
+        .text(`Phone: ${invoice.customer.phone}`, { align: "right" });
 
-	// Add the QR code to the PDF
-	doc.fontSize(20).text('Scan to Pay:', 400, 580);
-	doc.image(qrCodeBuffer, 400, 610, { fit: [120, 120] }); // Adjust QR code position
+      doc.text(`Email: ${invoice.business.email}`, { align: "left" });
+      doc.text(`Tax ID: ${invoice.business.taxId}`, { align: "left" });
+
+      doc.moveDown(1.5);
+      doc.text(`Issued: ${invoice.dateIssued.toDateString()}`, { continued: true });
+      doc.text(`Due: ${invoice.dueDate.toDateString()}`, { align: "right" });
+
+      // Table for items
+      const tableData = {
+        headers: [
+          { label: "Description", headerColor: "blue" },
+          { label: "Quantity", headerColor: "blue", align: "right" },
+          { label: "Price", headerColor: "blue", align: "right" },
+          { label: "Total", headerColor: "blue", align: "right" },
+        ],
+        rows: invoice.items.map((item) => [item.description, item.quantity, item.price, item.total]),
+      };
+
+      doc.moveDown(2);
+      doc.table(tableData, {
+        width: doc.page.width - 60.28,
+        columnsSize: [235, 100, 100, 100],
+        padding: 5,
+        prepareHeader: () => doc.font("Helvetica-Bold").fontSize(14),
+        prepareRow: (row, i) => doc.font("Helvetica").fontSize(10),
+      });
+
+      // Totals
+      doc.text(`SubTotal: ${invoice.subtotal.toFixed(2)}`, { align: "right" });
+      doc.text(`Tax: ${invoice.tax.toFixed(2)}`, { align: "right" });
+      doc.moveDown(1.5);
+      doc.fontSize(14).text(`Total: ${invoice.totalAmount.toFixed(2)}`, { align: "right" });
+
+      // QR Code
+      const url = process.env.FRONTEND_URL+"/invoice/"+invoice._id;
+      const qrCodeDataUrl = await QRCode.toDataURL(url);
+      const base64Data = qrCodeDataUrl.split(",")[1];
+      const qrCodeBuffer = Buffer.from(base64Data, "base64");
+      doc.text("Scan to Pay", 480, 695);
+      doc.image(qrCodeBuffer, 465, 710, { fit: [100, 100], align: "center", valign: "center" });
+
+      // End the document
+      doc.end();
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
-
-// Function to draw the header
-function generateHeader(doc) {
-	doc
-		.fontSize(20)
-		.text('Invoice', 50, 50)
-		.fontSize(10)
-		.text('Mobile App Redesign', 50, 75)
-		.text('Invoice #', 450, 50, { align: 'right' })
-		.text('07292022', 450, 65, { align: 'right' })
-		.text('Issue Date', 450, 80, { align: 'right' })
-		.text('Jul 29, 2022', 450, 95, { align: 'right' })
-		.text('Due Date', 450, 110, { align: 'right' })
-		.text('Aug 29, 2022', 450, 125, { align: 'right' })
-		.moveDown();
-}
-
-// Function to generate customer information
-function generateCustomerInformation(doc) {
-	doc
-		.text('Bill To:', 50, 150)
-		.font('Helvetica-Bold')
-		.text('Apple, Inc.', 50, 165)
-		.font('Helvetica')
-		.text('1 Infinite Loop', 50, 180)
-		.text('Cupertino, CA, 95014', 50, 195);
-}
-
-// Function to generate the invoice table
-function generateInvoiceTable(doc) {
-	doc
-		.font('Helvetica-Bold')
-		.text('CHARGES', 50, 250)
-		.text('QUANTITY', 250, 250, { align: 'right' })
-		.text('TOTAL', 450, 250, { align: 'right' })
-		.moveDown();
-
-	doc
-		.font('Helvetica')
-		.text('Application Design', 50, 270)
-		.text('1', 250, 270, { align: 'right' })
-		.text('$5,500.00', 450, 270, { align: 'right' })
-		.moveDown();
-
-	doc
-		.fontSize(8)
-		.text('Third round of feedback requested by the client', 50, 285)
-		.fontSize(10)
-		.text('Additional Revisions', 50, 310)
-		.text('1', 250, 310, { align: 'right' })
-		.text('$375.00', 450, 310, { align: 'right' })
-		.moveDown();
-
-	doc
-		.text('Icon Design', 50, 330)
-		.text('1', 250, 330, { align: 'right' })
-		.text('$1,250.00', 450, 330, { align: 'right' });
-}
-
-// Function to generate the invoice totals
-function generateInvoiceTotals(doc) {
-	doc
-		.fontSize(10)
-		.text('Subtotal', 400, 400, { align: 'right' })
-		.text('$7,125.00', 450, 400, { align: 'right' });
-
-	doc
-		.text('Discount (5%)', 400, 420, { align: 'right' })
-		.text('$356.25', 450, 420, { align: 'right' });
-
-	doc
-		.font('Helvetica-Bold')
-		.text('Total Due:', 400, 440, { align: 'right' })
-		.text('$6,768.75', 450, 440, { align: 'right' });
-}
-
-// Function to generate footer
-function generateFooter(doc) {
-	doc
-		.fontSize(10)
-		.text('Payments:', 50, 700)
-		.text('Checks payable to:', 50, 715)
-		.font('Helvetica-Bold')
-		.text('Felix Driscoll', 50, 730)
-		.font('Helvetica')
-		.text('123 Baker Ln', 50, 745)
-		.text('Los Angeles, CA, 91004', 50, 760);
-
-	doc
-		.fontSize(10)
-		.text('Contact:', 300, 700)
-		.font('Helvetica-Bold')
-		.text('Felix Appleseed', 300, 715)
-		.font('Helvetica')
-		.text('hello@felixappleseed.com', 300, 730)
-		.text('(123) 456-7890', 300, 745);
-}
-
-// Function to create the full invoice
-async function createInvoiceWithQR() {
-	// Draw header, customer info, and table
-	generateHeader(doc);
-	generateCustomerInformation(doc);
-	generateInvoiceTable(doc);
-	generateInvoiceTotals(doc);
-	generateFooter(doc);
-
-	// Generate QR code
-	const url = 'https://dampdigits.me';
-	await generatePDFWithQR(doc, url);
-
-	// Finalize the PDF and end the stream
-	doc.end();
-}
-
-// Generate the invoice
-createInvoiceWithQR().then(() => {
-	console.log('Invoice with QR Code generated successfully');
-});
-

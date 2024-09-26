@@ -4,7 +4,6 @@ import ApiError from "../libs/ApiError.js";
 export const validateBody = (schema) => {
   return async (req, res, next) => {
     try {
-      console.log(req.body)
       await schema.parseAsync(req.body);
       next();
     } catch (error) {

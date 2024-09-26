@@ -120,12 +120,14 @@ export default function InvoiceForm() {
           credentials: "include",
         }
       );
-      const data = await res.json();
-      if (data.success) {
-        toast.success("Invoice created successfully");
+      const data = await res.blob();
+      if (data) {
         form.reset();
-      } else {
-        toast.error(data?.message);
+        const url = URL.createObjectURL(data);
+        window.open(url);
+      }
+      if (!data) {
+        toast.error("Something went wrong");
       }
     } catch (error) {
       console.log(error);
