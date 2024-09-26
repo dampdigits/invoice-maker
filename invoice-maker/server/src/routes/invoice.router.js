@@ -9,6 +9,7 @@ import {
   createInvoice,
   getInvoice,
   getInvoices,
+  invoiceToCSV,
 } from "../controllers/invoice.controller.js";
 
 const invoiceRouter = Router();
@@ -20,6 +21,7 @@ invoiceRouter.post(
   createInvoice
 );
 invoiceRouter.get("/getAll", checkToken, getInvoices);
+invoiceRouter.get("/csv", checkToken, invoiceToCSV);
 invoiceRouter.get("/:id", validateParams(invoiceIdSchema), getInvoice);
 
 export default invoiceRouter;

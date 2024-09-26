@@ -1,6 +1,7 @@
 import ApiError from "../libs/ApiError.js";
 import ApiResponse from "../libs/ApiResponse.js";
 import Invoice from "../models/invoice.model.js";
+import { Parser } from "json2csv";
 
 export const createInvoice = async (req, res) => {
   try {
@@ -64,5 +65,69 @@ export const getInvoices = async (req, res) => {
     return res
       .status(500)
       .json(new ApiError(error.message || "Internal Server Error"));
+  }
+};
+
+export const invoiceToCSV = async (req, res) => {
+  try {
+    const invoices = await Invoice.find({
+      business: res.locals.business._id,
+    }).populate("business");
+    const invoiceData = invoices.map((invoice) => ({
+      invoiceId: invoice._id,
+      businessId: invoice.business?._id,
+      businessName: invoice.business?.name, // assuming the Business model has a name field
+      customerName: invoice.customer.name,
+      customerPhone: invoice.customer.phone,
+      customerStreet: invoice.customer.address.street,
+      customerCity: invoice.customer.address.city,
+      customerState: invoice.customer.address.state,
+      customerZipCode: invoice.customer.address.zipCode,
+      items: invoice.items
+        .map(
+          (item) => `${item.description} (x${item.quantity} @ $${item.price})`
+        )
+        .join("; "), // Consolidating items into one field
+      dateIssued: invoice.dateIssued.toISOString().split("T")[0],
+      dueDate: invoice.dueDate.toISOString().split("T")[0],
+      subtotal: invoice.subtotal,
+      tax: invoice.tax || 0,
+      totalAmount: invoice.totalAmount,
+      status: invoice.status,
+    }));
+
+    // Define CSV fields
+    const fields = [
+      "invoiceId",
+      "businessId",
+      "businessName",
+      "customerName",
+      "customerPhone",
+      "customerStreet",
+      "customerCity",
+      "customerState",
+      "customerZipCode",
+      "items",
+      "dateIssued",
+      "dueDate",
+      "subtotal",
+      "tax",
+      "totalAmount",
+      "status",
+    ];
+
+    // Convert JSON to CSV
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(invoiceData);
+
+    // Set response headers to prompt file download
+    res.header("Content-Type", "text/csv");
+    res.attachment("invoices.csv");
+
+    // Send CSV as a response
+    res.send(csv);
+  } catch (error) {
+    console.error("Error fetching invoices or generating CSV:", error);
+    res.status(500).send("Server Error");
   }
 };
