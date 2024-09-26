@@ -19,7 +19,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-export default function page() {
+export default function Register() {
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(registerSchema),

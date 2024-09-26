@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
 import { Users } from "lucide-react";
-export default function page() {
+export default function Login() {
   const router = useRouter();
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -108,7 +108,7 @@ export default function page() {
           </form>
         </Form>
         <p className="text-center mt-4">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/register" className="text-blue-500">
             Register
           </Link>
